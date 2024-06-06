@@ -13,12 +13,12 @@ def portfolio_cost(filename):
     shares = []
     price = []
 
-    for row in rows:
+    for rowno, row in enumerate(rows, start=1):
         try:
             shares.append(row[1])
             price.append(row[2])
         except ValueError:
-            print("Could not parse file on line", line)
+            print(f"Row {rowno}: Bad row: {row}")
     print(f"shares {shares}")
     print(f"price {price}")
     value = 0
@@ -26,7 +26,7 @@ def portfolio_cost(filename):
         try:
             value += int(shares[i]) * float(price[i])
         except ValueError:
-            print("Could not parse file on line", i)
+            print(f"Row {rowno}: Bad row: {row}")
 
     return value
 
