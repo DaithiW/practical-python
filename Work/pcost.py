@@ -12,22 +12,19 @@ def portfolio_cost(filename):
 
     shares = []
     price = []
+    value = 0
 
     for rowno, row in enumerate(rows, start=1):
+        record = dict(zip(headers, row))
         try:
-            shares.append(row[1])
-            price.append(row[2])
+            shares.append(record["shares"])
+            price.append(record["price"])
+            value += int(shares[rowno-1]) * float(price[rowno-1])
         except ValueError:
             print(f"Row {rowno}: Bad row: {row}")
-    print(f"shares {shares}")
-    print(f"price {price}")
-    value = 0
-    for i in range(len(shares)):
-        try:
-            value += int(shares[i]) * float(price[i])
-        except ValueError:
-            print(f"Row {rowno}: Bad row: {row}")
-
+    # print(f"shares {shares}")
+    # print(f"price {price}")
+    # for i in range(len(shares)):
     return value
 
 if len(sys.argv) == 2:

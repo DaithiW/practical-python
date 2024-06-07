@@ -10,9 +10,9 @@ def read_portfolio(filename):
     portfolio = []
     with open(filename, "rt") as f:
         rows = csv.reader(f)
-
+        headers = next(rows)
         # each stock should be a dict, not tuple - keys - "name" "shares" "price"
-        for row in rows:
+        for i, row in enumerate(rows):
             try:
                 holding = {
                     "name": row[0],
@@ -22,7 +22,7 @@ def read_portfolio(filename):
                 # return the portfolio list
                 portfolio.append(holding)
             except ValueError:
-                print("unable to parse file on line", row)
+                print("unable to parse file on line", i)
 
         return portfolio
 
