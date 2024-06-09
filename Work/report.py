@@ -2,48 +2,52 @@
 #
 # Exercise 2.4
 import csv
+import fileparse
 
 
 def read_portfolio(filename):
     "this is a some info"
     # assuming this is for prices when purchased...
-    portfolio = []
-    with open(filename, "rt") as f:
-        rows = csv.reader(f)
-        headers = next(rows)
-        # each stock should be a dict, not tuple - keys - "name" "shares" "price"
-        for i, row in enumerate(rows):
-            try:
-                holding = {
-                    "name": row[0],
-                    "shares": int(row[1]),
-                    "price": float(row[2]),
-                }
-                # return the portfolio list
-                portfolio.append(holding)
-            except ValueError:
-                print("unable to parse file on line", i)
+    # portfolio = []
+    portfolio = fileparse.parse_csv(filename, types=[str, int, float])
 
-        return portfolio
+    # with open(filename, "rt") as f:
+    #     rows = csv.reader(f)
+    #     headers = next(rows)
+    #     # each stock should be a dict, not tuple - keys - "name" "shares" "price"
+    #     for i, row in enumerate(rows):
+    #         try:
+    #             holding = {
+    #                 "name": row[0],
+    #                 "shares": int(row[1]),
+    #                 "price": float(row[2]),
+    #             }
+    #             # return the portfolio list
+    #             portfolio.append(holding)
+    #         except ValueError:
+    #             print("unable to parse file on line", i)
+
+    return portfolio
 
 
 def read_prices(filename):
     "some more info"
     # assume this is for current price
+    price_tup = fileparse.parse_csv(filename, types=[str, float], has_headers=False)
+    # this is a list of tuples (name, price (str))
+    # price_dict = {}
+    # with open(filename, "rt") as f:
+    #     rows = csv.reader(f)
 
-    price_dict = {}
-    with open(filename, "rt") as f:
-        rows = csv.reader(f)
+    #     # assume headers
 
-        # assume headers
-
-        for row in rows:
-            try:
-                price_dict[row[0]] = float(row[1])
-            except IndexError:
-                print("some error on row", row)
-
-        return price_dict
+    #     for row in rows:
+    #         try:
+    #             price_dict[row[0]] = float(row[1])
+    #         except IndexError:
+    #             print("some error on row", row)
+    price_dict = {name: price for name, price in price_tup}
+    return price_dict
 
 
 def calc_diff(portfolio, prices):
@@ -89,3 +93,11 @@ def print_report(report):
     for name, shares, price, change in report:
         price = "$" + f"{price:>.2f}"
         print(f"{name:>10s} {shares:>10d} {price:>10s} {change:>10.2f}")
+
+
+def portfolio_report(portfolio, prices):
+    pf = read_portfolio(portfolio)
+    pr = read_prices(prices)
+
+    rp = make_report(pf, pr)
+    print_report(rp)
