@@ -36,10 +36,20 @@ def portfolio_cost(filename):
     return value
 
 
-if len(sys.argv) == 2:
-    filename = sys.argv[1]
-else:
-    filename = "Data/portfolio.csv"
+# if len(sys.argv) == 2:
+#     filename = sys.argv[1]
+# else:
+#     filename = "Data/portfolio.csv"
 
-cost = portfolio_cost(filename)
-print("Total cost ", cost)
+# cost = portfolio_cost(filename)
+
+
+def main(argv):
+    if len(argv) != 2:
+        raise SystemExit(f"Usage: {argv[0]}" "portfile")
+    portfile = argv[1]
+    cost = portfolio_cost(portfile)
+    print("Total cost ", cost)
+
+if __name__ == "__main__":
+    main(sys.argv)

@@ -3,7 +3,7 @@
 # Exercise 2.4
 import csv
 import fileparse
-
+import sys
 
 def read_portfolio(filename):
     "this is a some info"
@@ -101,3 +101,13 @@ def portfolio_report(portfolio, prices):
 
     rp = make_report(pf, pr)
     print_report(rp)
+
+def main():
+    if len(sys.argv) != 3:
+       raise SystemExit(f"Usage: {sys.argv[0]} " "portfile pricefile")
+    portfile = sys.argv[1]
+    pricefile = sys.argv[2]
+    portfolio_report(portfile, pricefile)
+
+if __name__ == "__main__":
+    main()
