@@ -4,7 +4,7 @@
 import csv
 import sys
 import report
-
+import stock
 
 def portfolio_cost(filename):
     "calculates portfolio cost from a csv"
@@ -12,7 +12,7 @@ def portfolio_cost(filename):
     portfolio_dict = report.read_portfolio(filename)
     value = 0
     for d in portfolio_dict:
-        value += d["shares"] * d["price"]
+        value += d.shares * d.price
 
     # f = open(filename, "rt")
     # rows = csv.reader(f)
