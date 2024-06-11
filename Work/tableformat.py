@@ -44,6 +44,7 @@ class CSVTableFormatter(TableFormatter):
     def row(self, rowdata):
         print(",".join(rowdata))
 
+
 class HTMLTableFormatter(TableFormatter):
     """
     Emit portfolio data in HTML format
@@ -54,7 +55,8 @@ class HTMLTableFormatter(TableFormatter):
 
     def row(self, rowdata):
         print("<tr><td>" + "</td><td>".join(rowdata) + "</td></tr>")
-        
+
+
 def create_formatter(name):
     if name == "txt":
         return TextTableFormatter()
@@ -63,4 +65,16 @@ def create_formatter(name):
     elif name == "html":
         return HTMLTableFormatter()
     else:
-        raise RuntimeError(f"Unknown format {name}")
+        raise FormatError(f"Unknown format {name}")
+
+
+def print_table(objects, columns, formatter):
+    # portfolio = [stock.Stock(d["name"], d["shares"], d["price"]) for d in portdicts]
+    # formatter = create_formatter("type")
+    formatter.headings(columns)
+    for obj in objects:
+        rowdata = [str(getattr(obj, name)) for name in columns]
+        formatter.row(rowdata)
+
+class FormatError(Exception):
+    pass
