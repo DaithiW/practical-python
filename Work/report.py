@@ -8,12 +8,14 @@ import stock
 import tableformat
 
 
-def read_portfolio(filename):
+def read_portfolio(filename, **opts):
     "this is a some info"
     # assuming this is for prices when purchased...
     # portfolio = []
     with open(filename, "rt") as f:
-        portdicts = fileparse.parse_csv(f, types=[str, int, float])
+        portdicts = fileparse.parse_csv(
+            f, select=["name", "shares", "price"], types=[str, int, float], **opts
+        )
 
     # with open(filename, "rt") as f:
     #     rows = csv.reader(f)
@@ -30,7 +32,8 @@ def read_portfolio(filename):
     #             portfolio.append(holding)
     #         except ValueError:
     #             print("unable to parse file on line", i)
-    portfolio = [stock.Stock(d["name"], d["shares"], d["price"]) for d in portdicts]
+
+    portfolio = [stock.Stock(**d) for d in portdicts]
     return portfolio
 
 
@@ -121,7 +124,7 @@ def portfolio_report(portfoliofile, pricefile, fmt="txt"):
     )  # In the tutorial this is called make_report_data
 
     # Print it out
-    formatter = tableformat.create_formatter(fmt)    
+    formatter = tableformat.create_formatter(fmt)
     print_report(report, formatter)
 
     # pf = read_portfolio(portfolio)
